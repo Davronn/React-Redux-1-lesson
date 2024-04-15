@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Dashboard from "../components/Dashboard";
 import { Table, Input } from "antd";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../users/userActions";
 
 const { Search } = Input;
 
@@ -9,24 +11,22 @@ const Students = () => {
   const [students, setStudents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    fetchStudents();
-  }, []);
+  const { loading, users, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const fetchStudents = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/students");
-      setStudents(response.data);
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-    }
-  };
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, []); 
+
+ 
+
+  
 
   const handleSearch = (value) => {
     setSearchQuery(value);
   };
 
-  const filteredStudents = students.filter(
+  const filteredStudents = users.filter(
     (student) =>
       student.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
       student.lastName.toLowerCase().includes(searchQuery.toLowerCase())
