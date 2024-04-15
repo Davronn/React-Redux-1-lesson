@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/store.js";
 
 const App = () => {
+
   return (
     <>
       <Provider store={store}>
